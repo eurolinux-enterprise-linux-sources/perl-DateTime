@@ -5,7 +5,7 @@
 Name:           perl-DateTime
 # must now be 0.xx00 to preserve upgrade path:
 Version:        %{DT_version}00
-Release:        2%{?dist}
+Release:        3%{?dist}
 Epoch:          1
 Summary:        Date and time objects
 License:        GPL+ or Artistic
@@ -16,6 +16,9 @@ Source1:        http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-TimeZone-%{
 Source2:        http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-Locale-%{DTLocale_version}.tar.gz
 # Bug #978360, fixed in upstream 0.71
 Patch0:         DateTime-0.53-leap2012.patch
+# Bug #1354447, fixed in upstream 1.34
+Patch1:         DateTime-0.53-leap2015.patch
+Patch2:         DateTime-0.53-leap2016.patch
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  perl(Class::ISA)
 BuildRequires:  perl(Class::Singleton) >= 1.03
@@ -59,6 +62,8 @@ http://datetime.perl.org/?FAQ.
 %setup -q -T -D -n DateTimeBundle -a 1
 %setup -q -T -D -n DateTimeBundle -a 2
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 (
 f=DateTime-%{DT_version}/lib/DateTime/LeapSecond.pm
@@ -143,6 +148,9 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorarch}/DateTime*.pm
 
 %changelog
+* Wed Sep 07 2016 Jitka Plesnikova <jplesnik@redhat.com> - 1:0.5300-3
+- Recognize leap second on 2015-06-30 and 2016-12-31 (Resolves: #1354447)
+
 * Thu Jun 27 2013 Petr Pisar <ppisar@redhat.com> - 1:0.5300-2
 - Recognize leap second on 2012-06-30 (Resolves: #978360)
 
