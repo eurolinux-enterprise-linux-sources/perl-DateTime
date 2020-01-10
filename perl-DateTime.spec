@@ -5,7 +5,7 @@
 Name:           perl-DateTime
 # must now be 0.xx00 to preserve upgrade path:
 Version:        %{DT_version}00
-Release:        1%{?dist}
+Release:        2%{?dist}
 Epoch:          1
 Summary:        Date and time objects
 License:        GPL+ or Artistic
@@ -14,6 +14,8 @@ URL:            http://search.cpan.org/dist/DateTime/
 Source0:        http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-%{DT_version}.tar.gz
 Source1:        http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-TimeZone-%{DTTimeZone_version}.tar.gz
 Source2:        http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-Locale-%{DTLocale_version}.tar.gz
+# Bug #978360, fixed in upstream 0.71
+Patch0:         DateTime-0.53-leap2012.patch
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  perl(Class::ISA)
 BuildRequires:  perl(Class::Singleton) >= 1.03
@@ -56,6 +58,7 @@ http://datetime.perl.org/?FAQ.
 %setup -q -T -c -n DateTimeBundle -a 0
 %setup -q -T -D -n DateTimeBundle -a 1
 %setup -q -T -D -n DateTimeBundle -a 2
+%patch0 -p1
 
 (
 f=DateTime-%{DT_version}/lib/DateTime/LeapSecond.pm
@@ -77,6 +80,7 @@ cd DateTime-%{DT_version}
 PERLLIB=../DateTime-Locale-%{DTLocale_version}/blib/lib
 PERLLIB=$PERLLIB:../DateTime-TimeZone-%{DTTimeZone_version}/blib/lib
 export PERLLIB
+%{__perl} tools/leap_seconds_header.pl
 %{__perl} Build.PL installdirs=vendor optimize="$RPM_OPT_FLAGS"
 ./Build
 cd -
@@ -139,6 +143,9 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorarch}/DateTime*.pm
 
 %changelog
+* Thu Jun 27 2013 Petr Pisar <ppisar@redhat.com> - 1:0.5300-2
+- Recognize leap second on 2012-06-30 (Resolves: #978360)
+
 * Fri Jan 15 2010 Stepan Kasal <skasal@redhat.com> - 1:0.5300-1
 - new upstream version
 - use Build.PL as Makefile.PL no longer exists
