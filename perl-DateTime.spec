@@ -1,9 +1,9 @@
 Name:           perl-DateTime
 Epoch:          2
-Version:        1.03
-Release:        1%{?dist}
+Version:        1.04
+Release:        5%{?dist}
 Summary:        Date and time object
-License:        Artistic 2.0
+License:        (Artistic 2.0) and (GPL+ or Artistic)
 Group:          Development/Libraries
 URL:            http://search.cpan.org/dist/DateTime/
 Source0:        http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-%{version}.tar.gz
@@ -26,6 +26,8 @@ BuildRequires:  perl(Try::Tiny)
 BuildRequires:  perl(vars)
 BuildRequires:  perl(XSLoader)
 # Tests:
+# Cwd not used
+# Test::DependentModules not used
 BuildRequires:  perl(Test::Fatal)
 BuildRequires:  perl(Test::More) >= 0.88
 BuildRequires:  perl(utf8)
@@ -41,7 +43,7 @@ Provides:       perl(DateTimePPExtra) = %{version}
 
 %{?perl_default_filter}
 # Filter under-specified dependencies
-%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\((DateTime::TimeZone|Params::Validate)\\)$
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\((DateTime::Locale|DateTime::TimeZone|Params::Validate)\\)$
 
 %description
 DateTime is a class for the representation of date/time combinations.  It
@@ -73,6 +75,23 @@ find %{buildroot} -type f -name '*.bs' -size 0 -exec rm -f {} \;
 %{_mandir}/man3/*
 
 %changelog
+* Tue Jan 28 2014 Jitka Plesnikova <jplesnik@redhat.com> - 2:1.04-5
+- Fix license tag
+- Resolves: rhbz#1058691
+
+* Tue Jan 28 2014 Jitka Plesnikova <jplesnik@redhat.com> - 2:1.04-4
+- Update license tag
+- Resolves: rhbz#1058691
+
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2:1.04-3
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 2:1.04-2
+- Mass rebuild 2013-12-27
+
+* Tue Dec 10 2013 Petr Pisar <ppisar@redhat.com> - 2:1.04-1
+- 1.04 bump
+
 * Tue Jun 25 2013 Jitka Plesnikova <jplesnik@redhat.com> - 2:1.03-1
 - 1.03 bump
 
