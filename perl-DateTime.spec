@@ -1,13 +1,23 @@
 Name:           perl-DateTime
 Epoch:          2
 Version:        1.04
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Date and time object
 License:        (Artistic 2.0) and (GPL+ or Artistic)
 Group:          Development/Libraries
 URL:            http://search.cpan.org/dist/DateTime/
 Source0:        http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-%{version}.tar.gz
+# Restore object after failed truncate() call, bug #1095111, CPAN RT#93347,
+# in 1.09
+Patch0:         DateTime-1.06-Don-t-leave-the-object-in-a-modified-state-after-a-f.patch
+# Add 2015-06-30 leap second, bug #1353509, in 1.20
+Patch1:         DateTime-1.04-There-will-be-a-leap-second-on-June-30-2015.patch
+# Add 2016-12-31 leap second, bug #1353509, in 1.34
+Patch2:         DateTime-1.04-Add-leap-second-on-December-31-2016.patch
 BuildRequires:  perl
+BuildRequires:  perl(autodie)
+BuildRequires:  perl(integer)
+BuildRequires:  perl(lib)
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(strict)
 BuildRequires:  perl(warnings)
@@ -55,6 +65,10 @@ believed to be the birth of Jesus Christ.
 
 %prep
 %setup -q -n DateTime-%{version}
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+./tools/leap_seconds_header.pl
 
 %build
 %{__perl} Build.PL installdirs=vendor optimize="%{optflags}"
@@ -75,6 +89,10 @@ find %{buildroot} -type f -name '*.bs' -size 0 -exec rm -f {} \;
 %{_mandir}/man3/*
 
 %changelog
+* Wed May 07 2014 Petr Pisar <ppisar@redhat.com> - 2:1.04-6
+- Restore object after failed truncate() call (bug #1095111)
+- Add 2015-06-30 and 2016-12-31 leap seconds (bug #1353509)
+
 * Tue Jan 28 2014 Jitka Plesnikova <jplesnik@redhat.com> - 2:1.04-5
 - Fix license tag
 - Resolves: rhbz#1058691

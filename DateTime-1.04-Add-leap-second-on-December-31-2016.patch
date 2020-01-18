@@ -1,0 +1,51 @@
+From 5375759f62132dc8328baf939e471a32a6a3b3f5 Mon Sep 17 00:00:00 2001
+From: Dave Rolsky <autarch@urth.org>
+Date: Wed, 6 Jul 2016 08:49:37 -0500
+Subject: [PATCH 2/2] Add leap second on December 31, 2016
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Petr Písař <ppisar@redhat.com>
+---
+ leaptab.txt                | 1 +
+ lib/DateTime/LeapSecond.pm | 1 +
+ t/19leap-second.t          | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/leaptab.txt b/leaptab.txt
+index 4075fbd..e9fb846 100644
+--- a/leaptab.txt
++++ b/leaptab.txt
+@@ -24,3 +24,4 @@
+ 2009  Jan. 1  +1
+ 2012  Jul. 1  +1
+ 2015  Jul. 1  +1
++2017  Jan. 1  +1
+diff --git a/lib/DateTime/LeapSecond.pm b/lib/DateTime/LeapSecond.pm
+index 736f2eb..b936c72 100644
+--- a/lib/DateTime/LeapSecond.pm
++++ b/lib/DateTime/LeapSecond.pm
+@@ -107,6 +107,7 @@ sub _initialize {
+             2009  Jan. 1  +1
+             2012  Jun. 1  +1
+             2015  Jul. 1  +1
++            2017  Jan. 1  +1
+             )
+     );
+ }
+diff --git a/t/19leap-second.t b/t/19leap-second.t
+index 3d9434c..9d3f6eb 100644
+--- a/t/19leap-second.t
++++ b/t/19leap-second.t
+@@ -1157,6 +1157,7 @@ use DateTime;
+         [ 2008, 12, 31 ],
+         [ 2012, 6,  30 ],
+         [ 2015, 6,  30 ],
++        [ 2016, 12, 31 ],
+         ) {
+         my $formatted = join '-', map { sprintf( '%02d', $_ ) } @{$date};
+ 
+-- 
+2.5.5
+
